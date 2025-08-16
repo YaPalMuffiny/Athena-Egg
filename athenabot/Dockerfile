@@ -9,7 +9,6 @@ LABEL       org.opencontainers.image.description="Custom Docker image for my Ath
 
 # --- SYSTEM SETUP & DEPENDENCIES ---
 # Install essential packages for a Node.js bot
-# Add any other specific system libraries your bot needs here (e.g., ffmpeg for music)
 RUN         apt-get update && apt-get -y upgrade && \
             apt-get -y install --no-install-recommends \
                 build-essential \
@@ -34,7 +33,7 @@ RUN         curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
             apt-get install -y nodejs yarn && \
             apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Update npm to the latest version and install global packages if needed (e.g., for TypeScript)
+# Update npm to the latest version and install global packages if needed
 RUN         npm install npm@latest -g && \
             npm install typescript ts-node --location=global
 
@@ -50,8 +49,7 @@ WORKDIR     /home/container
 STOPSIGNAL SIGINT
 
 # Copy the entrypoint script and make it executable
-# The path is now correct because the build context is the 'athenabot' folder
-COPY        --chown=container:container entrypoint.sh /entrypoint.sh
+COPY        entrypoint.sh /entrypoint.sh
 RUN         chmod +x /entrypoint.sh
 
 # Set the entrypoint to run the startup script

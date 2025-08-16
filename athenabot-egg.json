@@ -10,7 +10,7 @@
     "description": "Egg for Athena Bot",
     "features": null,
     "docker_images": {
-        "ghcr.io/yapalmuffiny/athena-egg": "ghcr.io/yapalmuffiny/athena-egg:athenabot"
+        "ghcr.io/yapalmuffiny/athena-egg": "ghcr.io/yapalmuffiny/athena-egg"
     },
     "file_denylist": [],
     "startup": "if [ -f /home/container/package.json ]; then npm install; fi; node /home/container/{{JS_FILE}}",
@@ -29,7 +29,7 @@
     },
     "variables": [
         {
-            "name": "Starter File",
+            "name": "JS file",
             "description": "The file that starts the app",
             "env_variable": "JS_FILE",
             "default_value": "index.js",
