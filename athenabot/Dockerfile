@@ -50,7 +50,8 @@ WORKDIR     /home/container
 STOPSIGNAL SIGINT
 
 # Copy the entrypoint script and make it executable
-COPY        --chown=container:container ../entrypoint.sh /entrypoint.sh
+# The path is now correct because the build context is the 'athenabot' folder
+COPY        --chown=container:container entrypoint.sh /entrypoint.sh
 RUN         chmod +x /entrypoint.sh
 
 # Set the entrypoint to run the startup script

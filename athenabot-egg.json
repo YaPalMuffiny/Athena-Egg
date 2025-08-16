@@ -5,15 +5,15 @@
         "update_url": null
     },
     "exported_at": "2025-07-16T07:40:41+02:00",
-    "name": "Athena Bot egg",
+    "name": "Athena Bot Egg",
     "author": "nolan@muffiny.dev",
     "description": "Egg for Athena Bot",
     "features": null,
     "docker_images": {
-        "ghcr.io\/goover\/bot:athenabot": "ghcr.io\/goover\/bot:athenabot"
+        "ghcr.io/yapalmyffiny/athena-egg": "ghcr.io/yapalmyffiny/athena-egg"
     },
     "file_denylist": [],
-    "startup": "if [ -f \/home\/container\/package.json ]; then npm install; fi; node \/home\/container\/{{JS_FILE}}",
+    "startup": "if [ -f /home/container/package.json ]; then npm install; fi; node /home/container/{{JS_FILE}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"AthenaBot is up and running.\"\r\n}",
@@ -22,8 +22,8 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n\r\n#Variables\r\nclear\r\nRED='\\033[0;31m'\r\nGREEN='\\033[0;32m'\r\nYELLOW='\\033[1;33m'\r\nBLUE='\\033[0;34m'\r\nNC='\\033[0m'\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\necho -e \"${YELLOW}AthenaBot installscript${NC}\"\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\n\r\nmkdir -p \/mnt\/server\/\r\ncd \/mnt\/server\/\r\n\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\necho -e \"${YELLOW}installing dependencies...${NC}\"\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\napt update\r\napt install -y build-essential libtool python3 git tar\r\n\r\necho -e \"${BLUE}-----------------------------------------------------${NC}\"\r\necho -e \"${YELLOW}updating npm to latest. please wait...${NC}\"\r\necho -e \"${BLUE}-----------------------------------------------------${NC}\"\r\nnpm install -g npm@latest\r\nnpm --version\r\necho -e \"${GREEN}..done${NC}\"\r\n\r\nmkdir -p \/mnt\/server\/\r\ncd \/mnt\/server\/\r\n\r\nif [ -d \"\/mnt\/server\/mongodb\" ]\r\nthen\r\n    cd \/mnt\/server\/\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\n    echo -e \"${YELLOW}backup mongodb...${NC}\"\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\n    REINSTALL=true\r\n    tar -czf mongodb_backup.tar.gz mongodb\/\r\n    mv mongodb_backup.tar.gz \/tmp\r\n    echo -e \"${GREEN}done${NC}\"\r\nfi\r\n\r\ntar -czf mongodb_back.tar.gz mongodb\/\r\nmv mongodb_back.tar.gz \/tmp\r\n\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\necho -e \"${YELLOW}Installing nodejs packages${NC}\"\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\n\r\nif [ -f \/mnt\/server\/package.json ]; then\r\n    \/usr\/local\/bin\/npm install --production\r\nfi\r\n\r\nmkdir mongodb\/\r\nif [ \"$REINSTALL\" == \"true\" ]\r\nthen\r\n    cd \/mnt\/server\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\n    echo -e \"${YELLOW}reinstall...${NC}\"\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\n    mv \/tmp\/mongodb_backup.tar.gz \/mnt\/server\r\n    tar xf mongodb_backup.tar.gz\r\n    rm mongodb_backup.tar.gz\r\n    echo -e \"${GREEN}done${NC}\"\r\nelse\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\n    echo -e \"${YELLOW}fresh install${NC}\"\r\n    echo -e \"${BLUE}-------------------------------------------------${NC}\"\r\nfi\r\n\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\necho -e \"${GREEN}Installation completed${NC}\"\r\necho -e \"${BLUE}-------------------------------------------------${NC}\"\r\nexit 0",
-            "container": "ghcr.io\/goover\/installers:nodejs",
+            "script": "#!/bin/bash\n\n# --- A more vibrant color palette ---\nclear\nCYAN='\\033[1;36m'\nMAGENTA='\\033[1;35m'\nYELLOW='\\033[1;33m'\nGREEN='\\033[1;32m'\nRED='\\033[0;31m'\nNC='\\033[0m' # No Color\n\n# --- Helper function for clean logging ---\nrun_step() {\n    echo -e \"${YELLOW}⏳  $1...${NC}\"\n    if ! eval \"$2\" > /dev/null 2>&1; then\n        echo -e \"\\e[1A\\e[K${RED}❌  $1... Failed!${NC}\"\n        exit 1\n    fi\n    echo -e \"\\e[1A\\e[K${GREEN}✔  $1... Done!${NC}\"\n}\n\n# --- Welcome Banner ---\necho -e \"${CYAN}┌──────────────────────────────────────────┐${NC}\"\necho -e \"${CYAN}│     ${MAGENTA}AthenaBot Installation Script      ${CYAN}│${NC}\"\necho -e \"${CYAN}└──────────────────────────────────────────┘${NC}\"\necho \"\"\n\ncd /mnt/server/ || exit 1\n\n# --- Installation Steps ---\nrun_step \"Installing system dependencies\" \"apt-get update && apt-get install -y build-essential libtool python3 git tar\"\nrun_step \"Updating npm to latest version\" \"npm install -g npm@latest\"\n\necho -e \"${YELLOW}⏳  Installing Node.js packages...${NC}\"\nif [ -f /mnt/server/package.json ]; then\n    if ! npm install --production > /dev/null 2>&1; then\n         echo -e \"\\e[1A\\e[K${RED}❌  Installing Node.js packages... Failed!${NC}\"\n         exit 1\n    fi\n    echo -e \"\\e[1A\\e[K${GREEN}✔  Installing Node.js packages... Done!${NC}\"\nelse\n    echo -e \"\\e[1A\\e[K${YELLOW}⚪  No package.json found, skipping.${NC}\"\nfi\necho \"\"\n\n# --- Completion Message ---\necho -e \"${GREEN}🚀 Installation complete! Your bot is ready.${NC}\"\necho \"\"\nexit 0",
+            "container": "node:22-bookworm-slim",
             "entrypoint": "bash"
         }
     },
@@ -33,8 +33,8 @@
             "description": "The file that starts the app",
             "env_variable": "JS_FILE",
             "default_value": "index.js",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string",
             "field_type": "text"
         }
