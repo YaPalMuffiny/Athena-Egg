@@ -49,7 +49,8 @@ WORKDIR     /home/container
 STOPSIGNAL SIGINT
 
 # Copy the entrypoint script and make it executable
-COPY        entrypoint.sh /entrypoint.sh
+# FIXED: Corrected path to find entrypoint.sh inside the build context
+COPY        --chown=container:container entrypoint.sh /entrypoint.sh
 RUN         chmod +x /entrypoint.sh
 
 # Set the entrypoint to run the startup script
