@@ -6,8 +6,8 @@
     },
     "exported_at": "2024-07-13T07:40:41+02:00",
     "name": "Athena Bot",
-    "author": "eggs@goover.dev",
-    "description": "Egg for Lynx Athena Bot",
+    "author": "nolan@muffiny.dev",
+    "description": "Egg for Athena Bot",
     "features": null,
     "docker_images": {
         "ghcr.io\/goover\/bot:athenabot": "ghcr.io\/goover\/bot:athenabot"
@@ -34,16 +34,6 @@
             "env_variable": "JS_FILE",
             "default_value": "index.js",
             "user_viewable": false,
-            "user_editable": false,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "MongoDB URL",
-            "description": "",
-            "env_variable": "MONGO_URL",
-            "default_value": "mongodb:\/\/127.0.0.1:27017\/botdb",
-            "user_viewable": true,
             "user_editable": false,
             "rules": "required|string",
             "field_type": "text"
